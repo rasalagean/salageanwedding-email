@@ -50,5 +50,5 @@ def main(args):
 
     return {
         "statusCode" : HTTPStatus.ACCEPTED,
-        "body" : {"msg": "success"}
+        "body" : {"msg": "success", "email": mail_body, "args": args}
     }

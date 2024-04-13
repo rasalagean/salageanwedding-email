@@ -1,7 +1,6 @@
 from http import HTTPStatus
 import os
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail
+from mailersend import emails
 
 def main(args):
     '''
@@ -17,7 +16,6 @@ def main(args):
     key = os.getenv('API_KEY')
     user_from = args.get("from")
     user_to = args.get("to")
-    user_subject = args.get("subject")
     content = args.get("content")
 
     if not user_from:
@@ -41,19 +39,16 @@ def main(args):
             "body" : "no content provided"
         }
 
-    sg = SendGridAPIClient(key)
-    message = Mail(
-        from_email = user_from,
-        to_emails = user_to,
-        subject = user_subject,
-        html_content = content)
-    response = sg.send(message)
+    mailer = emails.NewEmail(key)
+    mail_body = {}
 
-    if response.status_code != 202:
-        return {
-            "statusCode" : response.status_code,
-            "body" : "email failed to send"
-        }
+    mailer.set_mail_from(user_from, mail_body)
+    mailer.set_mail_to(user_to, mail_body)
+    mailer.set_subject("SalageanWedding RSVP", mail_body)
+    mailer.set_plaintext_content(content, mail_body)
+
+    print(mailer.send(mail_body))
+
     return {
         "statusCode" : HTTPStatus.ACCEPTED,
         "body" : "success"

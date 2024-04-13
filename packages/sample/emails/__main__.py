@@ -1,10 +1,8 @@
 from http import HTTPStatus
 import os
-from mailersend import emails
-import logging
+import requests
 
 def main(args):
-    logging.basicConfig(filename="log_file.log", level=logging.WARN,format="%(asctime)s:%(levelname)s:%(message)s")
     '''
     Takes in the email address, subject, and message to send an email using SendGrid, 
     returns a json response letting the user know if the email sent or failed to send.
@@ -15,9 +13,8 @@ def main(args):
         Returns:
             json body: Json response if the email sent successfully or if an error happened
     '''
-    print(args)
-    logging.warning(f'${args}')
     key = os.getenv('API_KEY')
+    domain = os.getenv('DOMAIN')
     user_from = args.get("from")
     user_to = args.get("to")
     content = args.get("content")
@@ -38,17 +35,10 @@ def main(args):
             "body" : "no content provided"
         }
 
-    mailer = emails.NewEmail(key)
-    mail_body = {}
-
-    mailer.set_mail_from(user_from, mail_body)
-    mailer.set_mail_to(user_to, mail_body)
-    mailer.set_subject("SalageanWedding RSVP", mail_body)
-    mailer.set_plaintext_content(content, mail_body)
-
-    print(mailer.send(mail_body))
-
-    return {
-        "statusCode" : HTTPStatus.ACCEPTED,
-        "body" : {"msg": "success", "email": mail_body, "args": args}
-    }
+    return requests.post(
+            f"https://api.mailgun.net/v3/{domain}/messages",
+            auth=("api", key),
+            data={"from": user_from,
+                "to": [user_to],
+                "subject": "SalageanWedding RSVP",
+                "text": content})

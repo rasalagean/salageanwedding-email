@@ -47,5 +47,5 @@ def main(args):
 
     return {
         "statusCode" : HTTPStatus.ACCEPTED,
-        "body" : "success"
+        "body" : {"msg": "success"}
     }

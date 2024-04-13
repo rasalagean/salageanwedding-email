@@ -29,11 +29,6 @@ def main(args):
             "statusCode" : HTTPStatus.BAD_REQUEST,
             "body" : "no receiver email provided"
         }
-    if not user_subject:
-        return {
-            "statusCode" : HTTPStatus.BAD_REQUEST,
-            "body" : "no subject provided"
-        }
     if not content:
         return {
             "statusCode" : HTTPStatus.BAD_REQUEST,

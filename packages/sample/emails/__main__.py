@@ -38,7 +38,7 @@ def main(args):
     return requests.post(
             f"https://api.mailgun.net/v3/{domain}/messages",
             auth=("api", key),
-            data={"from": user_from,
+            data={"from": f"{user_from} <{domain}>",
                 "to": [user_to],
                 "subject": "SalageanWedding RSVP",
                 "text": content})

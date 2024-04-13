@@ -13,6 +13,7 @@ def main(args):
         Returns:
             json body: Json response if the email sent successfully or if an error happened
     '''
+    print(args)
     key = os.getenv('API_KEY')
     user_from = args.get("from")
     user_to = args.get("to")

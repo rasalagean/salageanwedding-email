@@ -1,8 +1,10 @@
 from http import HTTPStatus
 import os
 from mailersend import emails
+import logging
 
 def main(args):
+    logging.basicConfig(filename="log_file.log", level=logging.WARN,format="%(asctime)s:%(levelname)s:%(message)s")
     '''
     Takes in the email address, subject, and message to send an email using SendGrid, 
     returns a json response letting the user know if the email sent or failed to send.
@@ -14,6 +16,7 @@ def main(args):
             json body: Json response if the email sent successfully or if an error happened
     '''
     print(args)
+    logging.warning(f'${args}')
     key = os.getenv('API_KEY')
     user_from = args.get("from")
     user_to = args.get("to")

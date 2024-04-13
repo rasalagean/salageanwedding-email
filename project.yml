@@ -1,5 +1,6 @@
 environment:
   API_KEY: ${API_KEY}
+  DOMAIN: ${DOMAIN}
 packages:
   - name: sample
     actions:
